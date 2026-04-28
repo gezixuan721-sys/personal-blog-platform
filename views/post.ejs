@@ -1,0 +1,56 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="layout">
+  <article class="article panel">
+    <div class="article-meta">
+      <span class="kicker"><%= post.category %></span>
+      <% if (post.featured) { %>
+        <span class="badge featured">置顶</span>
+      <% } %>
+      <span><%= formatDate(post.publishedAt) %></span>
+      <span>更新于 <%= formatDate(post.updatedAt) %></span>
+    </div>
+    <h1><%= post.title %></h1>
+    <p class="excerpt"><%= post.summary %></p>
+    <div class="card-meta">
+      <% post.tags.forEach((tag) => { %>
+        <span class="tag"><%= tag %></span>
+      <% }) %>
+    </div>
+    <div class="post-content"><%- htmlContent %></div>
+  </article>
+
+  <aside class="side-column">
+    <section class="panel section">
+      <h2>相关阅读</h2>
+      <div class="related-grid">
+        <% if (related.length) { %>
+          <% related.forEach((item) => { %>
+            <a class="related-card" href="/posts/<%= item.slug %>">
+              <div class="card-top">
+                <span class="kicker"><%= item.category %></span>
+                <span class="muted"><%= formatDate(item.publishedAt) %></span>
+              </div>
+              <div class="related-title"><%= item.title %></div>
+              <p class="card-text"><%= item.summary %></p>
+            </a>
+          <% }) %>
+        <% } else { %>
+          <p class="empty-state">暂无相关文章</p>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>作者信息</h2>
+      <p class="muted">这是一个带后台的个人博客，你可以通过登录继续写作、编辑、归档和置顶。</p>
+      <% if (!user) { %>
+        <a class="primary" href="/login">登录后台</a>
+      <% } else { %>
+        <a class="ghost" href="/admin">前往后台</a>
+      <% } %>
+    </section>
+  </aside>
+</main>
+
+<%- include('partials/footer') %>

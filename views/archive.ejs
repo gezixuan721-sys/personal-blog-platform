@@ -1,0 +1,24 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="layout">
+  <section class="section panel">
+    <div class="row-top">
+      <h2><%= year %>-<%= String(month).padStart(2, '0') %> 归档</h2>
+      <a class="ghost" href="/archives">返回归档</a>
+    </div>
+    <div class="card-grid">
+      <% posts.forEach((post) => { %>
+        <a class="post-card" href="/posts/<%= post.slug %>">
+          <div class="card-top">
+            <span class="kicker"><%= post.category %></span>
+            <span><%= formatDate(post.publishedAt) %></span>
+          </div>
+          <h3 class="post-title"><%= post.title %></h3>
+          <p class="excerpt"><%= post.summary %></p>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

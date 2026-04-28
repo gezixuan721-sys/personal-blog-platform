@@ -1,0 +1,18 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="section panel">
+  <h2>归档</h2>
+  <div class="archive-grid">
+    <% archives.forEach((archive) => { %>
+      <a class="archive-card" href="/archives/<%= archive.year %>/<%= archive.month %>">
+        <div class="row-top">
+          <div class="archive-title"><%= archive.year %>-<%= String(archive.month).padStart(2, '0') %></div>
+          <span class="badge"><%= archive.count %> 篇</span>
+        </div>
+        <p class="card-text">查看这个月份发布的所有文章。</p>
+      </a>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

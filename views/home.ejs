@@ -1,0 +1,137 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="layout">
+  <section class="content-column">
+    <section class="hero panel">
+      <div class="hero-main">
+        <p class="eyebrow">Personal Blog / Knowledge Base</p>
+        <h1>把笔记整理成可以长期维护的博客</h1>
+        <p>
+          首页会优先展示置顶文章、最近更新和分类入口。你可以把它当作自己的公开知识库，也可以只记录生活、学习和面试。
+        </p>
+        <div class="hero-actions">
+          <a class="primary" href="/archives">查看归档</a>
+          <% if (user) { %>
+            <a class="ghost" href="/admin/posts/new">写新文章</a>
+          <% } else { %>
+            <a class="ghost" href="/login">登录后台</a>
+          <% } %>
+        </div>
+      </div>
+      <aside class="hero-side panel">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <p class="stat-value"><%= stats.published %></p>
+            <p class="muted">已发布</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value"><%= stats.featured %></p>
+            <p class="muted">置顶</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value"><%= stats.categories %></p>
+            <p class="muted">分类</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-value"><%= stats.total %></p>
+            <p class="muted">归档</p>
+          </div>
+        </div>
+        <div class="filter-box">
+          <p class="muted">搜索文章</p>
+          <form action="/" method="get" class="search">
+            <input type="search" name="q" value="<%= query %>" placeholder="搜索标题、标签或正文" />
+            <button class="primary" type="submit">搜索</button>
+          </form>
+        </div>
+      </aside>
+    </section>
+
+    <% if (featured.length) { %>
+      <section class="section panel">
+        <h2>置顶文章</h2>
+        <div class="card-grid">
+          <% featured.forEach((post) => { %>
+            <a class="post-card featured" href="/posts/<%= post.slug %>">
+              <div class="card-top">
+                <span class="badge featured">置顶</span>
+                <span class="meta"><%= formatDate(post.publishedAt) %></span>
+              </div>
+              <h3 class="post-title"><%= post.title %></h3>
+              <p class="excerpt"><%= post.summary %></p>
+              <div class="card-meta">
+                <span class="kicker"><%= post.category %></span>
+                <% post.tags.slice(0, 3).forEach((tag) => { %>
+                  <span class="tag"><%= tag %></span>
+                <% }) %>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+
+    <section class="section panel">
+      <div class="row-top">
+        <h2>最新文章</h2>
+        <span class="muted">共 <%= posts.length %> 篇</span>
+      </div>
+      <div class="card-grid">
+        <% recent.forEach((post) => { %>
+          <a class="post-card" href="/posts/<%= post.slug %>">
+            <div class="card-top">
+              <div class="meta">
+                <span class="kicker"><%= post.category %></span>
+                <span><%= formatDate(post.publishedAt) %></span>
+              </div>
+              <span class="muted"><%= post.tags.slice(0, 3).join(' · ') %></span>
+            </div>
+            <h3 class="post-title"><%= post.title %></h3>
+            <p class="excerpt"><%= post.summary %></p>
+          </a>
+        <% }) %>
+      </div>
+    </section>
+  </section>
+
+  <aside class="side-column">
+    <section class="panel section">
+      <h2>分类</h2>
+      <div class="tag-cloud">
+        <a class="pill <%= !activeCategory ? 'active' : '' %>" href="/">全部</a>
+        <% categories.forEach((category) => { %>
+          <a class="pill <%= activeCategory === category ? 'active' : '' %>" href="/?category=<%= encodeURIComponent(category) %>"><%= category %></a>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>归档</h2>
+      <div class="archive-list">
+        <% archives.forEach((archive) => { %>
+          <a class="archive-card" href="/archives/<%= archive.year %>/<%= archive.month %>">
+            <div class="archive-title"><%= archive.year %>-<%= String(archive.month).padStart(2, '0') %></div>
+            <div class="muted"><%= archive.count %> 篇</div>
+          </a>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>最近更新</h2>
+      <div class="admin-list">
+        <% posts.slice(0, 5).forEach((post) => { %>
+          <a class="category-card" href="/posts/<%= post.slug %>">
+            <div class="row-top">
+              <strong><%= post.title %></strong>
+              <span class="muted"><%= formatDate(post.publishedAt) %></span>
+            </div>
+            <p class="muted"><%= post.category %></p>
+          </a>
+        <% }) %>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<%- include('partials/footer') %>

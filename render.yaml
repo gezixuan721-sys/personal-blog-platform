@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: moyu-blog-platform
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /

@@ -1,0 +1,79 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="layout">
+  <section class="form-card panel">
+    <div class="row-top">
+      <div>
+        <p class="eyebrow"><%= mode === 'edit' ? 'Edit Post' : 'Create Post' %></p>
+        <h1><%= mode === 'edit' ? '编辑文章' : '新建文章' %></h1>
+      </div>
+      <a class="ghost" href="/admin">返回后台</a>
+    </div>
+
+    <form action="<%= mode === 'edit' ? `/admin/posts/${post.id}` : '/admin/posts' %>" method="post" class="form-grid">
+      <div class="form-row">
+        <label class="form-field">
+          <span>标题</span>
+          <input type="text" name="title" value="<%= post.title %>" required />
+        </label>
+        <label class="form-field">
+          <span>Slug</span>
+          <input type="text" name="slug" value="<%= post.slug %>" placeholder="可留空自动生成" />
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="form-field">
+          <span>分类</span>
+          <input type="text" name="category" value="<%= post.category %>" list="category-options" placeholder="例如：学习 / 面试 / 复盘" required />
+        </label>
+        <label class="form-field">
+          <span>标签</span>
+          <input type="text" name="tags" value="<%= Array.isArray(post.tags) ? post.tags.join(', ') : post.tags %>" placeholder="用英文逗号分隔" />
+        </label>
+      </div>
+
+      <label class="form-field">
+        <span>摘要</span>
+        <input type="text" name="summary" value="<%= post.summary %>" placeholder="首页和列表页展示的简介" required />
+      </label>
+
+      <label class="form-field">
+        <span>正文</span>
+        <textarea name="content" required><%= post.content %></textarea>
+      </label>
+
+      <div class="form-row">
+        <label class="form-field">
+          <span>状态</span>
+          <select name="status">
+            <option value="draft" <%= post.status === 'draft' ? 'selected' : '' %>>草稿</option>
+            <option value="published" <%= post.status === 'published' ? 'selected' : '' %>>已发布</option>
+          </select>
+        </label>
+        <label class="form-field">
+          <span>发布时间</span>
+          <input type="datetime-local" name="publishedAt" value="<%= post.publishedAt ? new Date(post.publishedAt).toISOString().slice(0, 16) : '' %>" />
+        </label>
+      </div>
+
+      <label class="check-row">
+        <input type="checkbox" name="featured" <%= post.featured ? 'checked' : '' %> />
+        <span>置顶文章</span>
+      </label>
+
+      <div class="form-toolbar">
+        <button class="primary" type="submit">保存</button>
+        <a class="ghost" href="/admin">取消</a>
+      </div>
+    </form>
+
+    <datalist id="category-options">
+      <% categories.forEach((category) => { %>
+        <option value="<%= category %>"></option>
+      <% }) %>
+    </datalist>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

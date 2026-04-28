@@ -1,0 +1,54 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="admin-grid">
+  <section class="panel admin-card">
+    <div class="row-top">
+      <h2>后台控制台</h2>
+      <a class="primary" href="/admin/posts/new">新建文章</a>
+    </div>
+    <div class="stat-grid" style="margin: 18px 0;">
+      <div class="stat-card"><p class="stat-value"><%= stats.total %></p><p class="muted">总文章</p></div>
+      <div class="stat-card"><p class="stat-value"><%= stats.published %></p><p class="muted">已发布</p></div>
+      <div class="stat-card"><p class="stat-value"><%= stats.drafts %></p><p class="muted">草稿</p></div>
+      <div class="stat-card"><p class="stat-value"><%= stats.featured %></p><p class="muted">置顶</p></div>
+    </div>
+    <div class="admin-list">
+      <% posts.forEach((post) => { %>
+        <article class="admin-row">
+          <div class="row-top">
+            <div>
+              <div class="title"><%= post.title %></div>
+              <div class="muted"><%= post.category %> · <%= post.slug %></div>
+            </div>
+            <div class="admin-toolbar">
+              <a class="ghost" href="/admin/posts/<%= post.id %>/edit">编辑</a>
+              <form action="/admin/posts/<%= post.id %>/delete" method="post" onsubmit="return confirm('确认删除这篇文章吗？');">
+                <button class="danger" type="submit">删除</button>
+              </form>
+            </div>
+          </div>
+          <div class="card-meta">
+            <span class="badge <%= post.featured ? 'featured' : '' %>"><%= post.featured ? '置顶' : '普通' %></span>
+            <span class="badge"><%= post.status === 'published' ? '已发布' : '草稿' %></span>
+            <span class="badge"><%= formatDate(post.publishedAt || post.updatedAt) %></span>
+          </div>
+          <p class="card-text"><%= post.summary %></p>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <aside class="side-column">
+    <section class="panel section">
+      <h2>说明</h2>
+      <ul class="info-list">
+        <li>文章页是公开访问的，后台需要登录。</li>
+        <li>置顶文章会优先显示在首页。</li>
+        <li>发布时会自动记录发布时间。</li>
+        <li>数据会写到服务器上的 JSON 文件，适合个人博客初期部署。</li>
+      </ul>
+    </section>
+  </aside>
+</main>
+
+<%- include('partials/footer') %>

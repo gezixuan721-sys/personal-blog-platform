@@ -1,0 +1,31 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="layout">
+  <section class="section panel">
+    <div class="row-top">
+      <h2><%= category %></h2>
+      <a class="ghost" href="/categories">返回分类</a>
+    </div>
+    <div class="card-grid">
+      <% posts.forEach((post) => { %>
+        <a class="post-card" href="/posts/<%= post.slug %>">
+          <div class="card-top">
+            <span class="kicker"><%= post.category %></span>
+            <span><%= formatDate(post.publishedAt) %></span>
+          </div>
+          <h3 class="post-title"><%= post.title %></h3>
+          <p class="excerpt"><%= post.summary %></p>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+
+  <aside class="side-column">
+    <section class="panel section">
+      <h2>该分类信息</h2>
+      <p class="muted">这里可以继续做标签筛选、RSS 或分页扩展。</p>
+    </section>
+  </aside>
+</main>
+
+<%- include('partials/footer') %>

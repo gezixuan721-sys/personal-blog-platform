@@ -1,0 +1,28 @@
+<%- include('partials/head', { pageTitle, site, user: null }) %>
+
+<main class="layout">
+  <section class="form-card panel">
+    <p class="eyebrow">Admin Login</p>
+    <h1>登录后台</h1>
+    <p class="form-help">输入你在 <code>.env</code> 中配置的账号和密码，登录后可以写文章、改分类、设置置顶和发布时间。</p>
+    <% if (error) { %>
+      <p class="admin-hint"><%= error %></p>
+    <% } %>
+    <form action="/login" method="post" class="form-grid">
+      <label class="form-field">
+        <span>账号</span>
+        <input type="text" name="username" placeholder="admin" required />
+      </label>
+      <label class="form-field">
+        <span>密码</span>
+        <input type="password" name="password" placeholder="请输入密码" required />
+      </label>
+      <div class="login-actions">
+        <button class="primary" type="submit">登录</button>
+        <a class="ghost" href="/">返回首页</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

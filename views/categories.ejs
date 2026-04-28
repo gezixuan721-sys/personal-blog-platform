@@ -1,0 +1,18 @@
+<%- include('partials/head', { pageTitle, site, user }) %>
+
+<main class="section panel">
+  <h2>分类</h2>
+  <div class="category-grid">
+    <% categories.forEach((category) => { %>
+      <a class="category-card" href="/categories/<%= encodeURIComponent(category.name) %>">
+        <div class="row-top">
+          <div class="category-title"><%= category.name %></div>
+          <span class="badge"><%= category.count %> 篇</span>
+        </div>
+        <p class="card-text">查看该分类下的全部文章。</p>
+      </a>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
